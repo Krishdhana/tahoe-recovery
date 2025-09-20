@@ -1,4 +1,4 @@
-name: macOS Public Release Recovery Image
+name: macOS Beta (Tahoe) Recovery Image
 
 on:
   workflow_dispatch:
@@ -13,14 +13,18 @@ jobs:
         run: |
           git clone https://github.com/corpnewt/gibMacOS.git
 
-      - name: Download macOS Installer (latest public release)
+      - name: Download macOS Installer (Tahoe)
         run: |
-          # Remove the -c developer flag to get the public release version
-          python ./gibMacOS/gibMacOS.py -v latest -m 26 -o /tmp/macOS-public-release
+          # Download the Tahoe beta release
+          python ./gibMacOS/gibMacOS.py -v Tahoe -m 26 -o /tmp/macOS-beta-release
+          
+          # The specific build number search is removed
+          # Proceeding with the installer without filtering by build number
 
       - name: Install the assistant
         run: |
-          sudo installer -pkg /tmp/macOS-public-release/InstallAssistant.pkg -target /
+          # Installing the downloaded macOS beta release assistant package
+          sudo installer -pkg /tmp/macOS-beta-release/InstallAssistant.pkg -target /
 
       - name: Generate macOS Installer
         run: |
